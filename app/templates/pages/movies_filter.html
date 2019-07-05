@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container my-5 mx-auto">
+    <form id="search" autocomplete="off">
+        <h3 class="h4">Start typing to see results.</h3>
+        {% csrf_token %}
+        <input type="text" class="form-control" id="term" name="term" autocomplete="off" placeholder="Enter Prefix of movie name">
+        <p class="my-5" id="nodDataFound" style="display: none">No data found</p>
+    </form>
+
+    <div class="table-responsive mt-3" style="display:none" id="moviesTable">
+        <table class="table" id="dataTable">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Link</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="Page navigation">
+            {% if movies.has_other_pages %}
+                <ul class="pagination justify-content-center my-1">
+                    {% if movies.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ movies.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a href="#" class="page-link disabled"><span>&laquo;</span></a></li>
+                    {% endif %}
+
+                    {% for i in movies.paginator.page_range %}
+                        {% if movies.number == i %}
+                            <li class="page-item active"><a href="#" class="page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if movies.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ movies.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a href="#" class="page-link disabled"><span>&raquo;</span></a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        window.onload = () => {
+            document.querySelector("#search").onsubmit = function(event) {
+                event.preventDefault();
+            }
+            document.querySelector("form #term").onkeyup = function(event) {
+                event.preventDefault()
+
+                
+                var nodDataFound = document.getElementById("nodDataFound");
+                var moviesTable = document.querySelector("#moviesTable");
+                var dataTable_body = document.querySelector("#dataTable tbody");
+
+                //  remove all the inner html of table body
+                dataTable_body.innerHTML = "";
+
+                if(this.value === "") {
+                    moviesTable.style.display ="none"
+                    return
+                }
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+                        if(data.length) {
+                            
+                            nodDataFound.style.display ="none"
+                            moviesTable.style.display ="block"
+
+                            for(let d = 0 ; d < data.length; d++) {
+                                dataTable_body.insertAdjacentHTML("beforeend",`<tr>
+                                    <th scope="row">${ data[d].prime_id }</th>
+                                    <td>${ data[d].name }</td>
+                                    <td>${ data[d].release_date}</td>
+                                    <td>${data[d].rating}</td>
+                                    <td><a href="/movies/${data[d].prime_id}" target="_blank">See More</a></td>
+                                </tr>`)
+                            }
+                        } else {
+                            nodDataFound.style.display ="block"
+                            moviesTable.style.display ="none"
+                            dataTable_body.innerHTML = ""
+                        }
+                    }
+                };
+
+                var data = `{% csrf_token %}`;
+                xhttp.open("GET", "/movies/search/?term="+this.value, true);
+                xhttp.setRequestHeader('X-CSRF-Token', data);
+                xhttp.send();
+            }
+        }
+    </script>
+</div>
+{% endblock %}

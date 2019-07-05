@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container my-5"
+    <div class="table-responsive">
+        {% if movies_count %}
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for movie in movies %}
+                <tr>
+                    <th scope="row">{{ movie.prime_id }}</th>
+                    <td>{{ movie.name }}</td>
+                    <td>{{ movie.release_date}}</td>
+                    <td>{{movie.rating}}</td>
+                    <td><a href="/movies/{{movie.prime_id}}">See More</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="Page navigation">
+            {% if movies.has_other_pages %}
+                <ul class="pagination justify-content-center my-1">
+                    {% if movies.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ movies.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a href="#" class="page-link disabled"><span>&laquo;</span></a></li>
+                    {% endif %}
+
+                    {% for i in movies.paginator.page_range %}
+                        {% if movies.number == i %}
+                            <li class="page-item active"><a href="#" class="page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if movies.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ movies.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a href="#" class="page-link disabled"><span>&raquo;</span></a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+        {% else %}
+            <p>No movies found in database.</p>
+            <ul>
+                <li>First Migrate the models</li>
+                <li>Then visit to <a href="/scrap">Scrap</a> Page to fetch some movies</li>
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
