@@ -1,8 +1,7 @@
 # SCRAP AND SERVE
 
 ## Why
-A PROJET TO ENHANCE WEB DEVELOPMENT SKILLS USING PYTHON, DJANGO & BOOTSTRAP
-IN THIS PROJECT I SCRAPPED N NUMBER OF MOVIES DATA FROM X WEBSITE AND STORE THEM IN THE DATABASE ALSO CREATED FRONT END TO SHOW ALL THOSE DATA. THERE ARE THREE PAGES ONE TO SHOW ALL THE DATA WITH PAGINATION, ONE TO SEE THE SINGLE ENTITY AND LAST PAGE TO FILTER DATA FROM DATABASE USING AJAX
+I have created this project to enhance my web development skills using Python, Django & bootstrap. In this project, I scrapped N number of movies data from XYZ website and store them in the database also created a front end UI to show all those data. There is a total of three pages, one to show all the data with pagination, another to see the single entity and the last page to filter data from database using ajax
 
 
 ## Deployment Link
