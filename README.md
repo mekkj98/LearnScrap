@@ -1,7 +1,7 @@
 # SCRAP AND SERVE
 
 ## Why
-I have created this project to enhance my web development skills. In this project, I scrapped N number of movies data from XYZ website and store them in the database also created a front end UI to show all those data. There is a total of three pages, one to show all the data with pagination, another to see the single entity and the last page to filter data from database using ajax
+I have created this project to enhance my web development skills. In this project, I scrapped N number of movies data from XYZ website and store them in the database also created a front end UI to show all those data. There is a total of three pages, one to show all the data with pagination, another to see the single entity and the last page to filter data from database using ajax.
 
 
 ## Deployment Link
